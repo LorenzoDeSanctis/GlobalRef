@@ -318,16 +318,17 @@ def plot_tau_shah_metrics(
 
     # solid lines: input τ
     if tau_stereo is not None:
-        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.4)
+        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1, linestyle="--")
     if tau_mono is not None:
-        ax.axvline(-tau_mono, color="tab:red", linewidth=1.4)
+        ax.axvline(-tau_mono, color="tab:red", linewidth=1, linestyle="--")
 
     # dashed lines: τ maximizing metric
-    ax.axvline(tau_ori_st_max, color="tab:blue", linestyle="--", linewidth=1.2)
-    ax.axvline(tau_ori_m_max,  color="tab:red",  linestyle="--", linewidth=1.2)
+    ax.axvline(tau_ori_st_max, color="tab:blue", linewidth=1)
+    ax.axvline(tau_ori_m_max,  color="tab:red", linewidth=1)
 
     ax.set_ylabel("Orientation accuracy")
     ax.set_ylim(0.99988, 1.0)
+    ax.set_xlim(min(taus), max(taus))
     ax.grid(True, alpha=0.25)
     ax.text(
         0.5, 1.1, "(a)",
@@ -336,7 +337,7 @@ def plot_tau_shah_metrics(
         fontsize=12,
     )
 
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc=3)
 
     # ==================================================
     # (b) Position accuracy
@@ -361,18 +362,19 @@ def plot_tau_shah_metrics(
         alpha=0.25,
     )
 
-    # solid lines: input τ
+    # Dashed lines: input τ
     if tau_stereo is not None:
-        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.4)
+        ax.axvline(-tau_stereo, color="tab:blue", linewidth=0.8, linestyle="--")
     if tau_mono is not None:
-        ax.axvline(-tau_mono, color="tab:red", linewidth=1.4)
+        ax.axvline(-tau_mono, color="tab:red", linewidth=0.8, linestyle="--")
 
-    # dashed lines: τ maximizing metric
-    ax.axvline(tau_pos_st_max, color="tab:blue", linestyle="--", linewidth=1.2)
-    ax.axvline(tau_pos_m_max,  color="tab:red",  linestyle="--", linewidth=1.2)
+    # Solid lines: τ maximizing metric
+    ax.axvline(tau_pos_st_max, color="tab:blue", linewidth=0.8)
+    ax.axvline(tau_pos_m_max,  color="tab:red", linewidth=0.8)
 
     ax.set_ylabel("Position accuracy")
     ax.set_ylim(0.999997, 1.0)
+    ax.set_xlim(min(taus), max(taus))
     ax.grid(True, alpha=0.25)
     ax.text(
         0.5, 1.1, "(b)",
@@ -389,5 +391,176 @@ def plot_tau_shah_metrics(
 
     plt.tight_layout(pad=0.4)
     plt.subplots_adjust(wspace=0.35)
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+def plot_tau_shah_metrics_2x2(
+    taus,
+    ori_mean_st,
+    ori_std_st,
+    pos_mean_st,
+    pos_std_st,
+    ori_mean_m,
+    ori_std_m,
+    pos_mean_m,
+    pos_std_m,
+    output_path,
+    tau_stereo=None,
+    tau_mono=None,
+):
+    """
+    Plot Shah metrics as a 2x2 figure.
+
+    Top row: orientation accuracy
+        (a) Stereo
+        (b) Monocular
+
+    Bottom row: position accuracy
+        (c) Stereo
+        (d) Monocular
+
+    For each panel:
+        solid vertical line  : τ provided in input
+        dashed vertical line : τ maximizing the plotted metric
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    # --------------------------------------------------
+    # Style
+    # --------------------------------------------------
+    plt.rcParams.update({
+        "font.size": 7,
+        "axes.labelsize": 7,
+        "axes.titlesize": 7,
+        "xtick.labelsize": 7,
+        "ytick.labelsize": 7,
+        "legend.fontsize": 7,
+    })
+
+    sns.set_theme(
+        style="whitegrid",
+        context="paper",
+        rc={
+            "axes.spines.top": False,
+            "axes.spines.right": False,
+            "axes.linewidth": 0.8,
+            "grid.linewidth": 0.6,
+        },
+    )
+
+    fig, axes = plt.subplots(2, 2, figsize=(7.48, 5.6), sharex=True)
+
+    # τ maximizing each metric
+    tau_ori_st_max = taus[np.argmax(ori_mean_st)]
+    tau_ori_m_max  = taus[np.argmax(ori_mean_m)]
+    tau_pos_st_max = taus[np.argmax(pos_mean_st)]
+    tau_pos_m_max  = taus[np.argmax(pos_mean_m)]
+
+    # ==================================================
+    # (a) Orientation, Stereo
+    # ==================================================
+    ax = axes[0, 0]
+
+    ax.plot(taus, ori_mean_st, color="tab:blue", lw=1.2)
+    ax.fill_between(
+        taus,
+        ori_mean_st - ori_std_st,
+        ori_mean_st + ori_std_st,
+        color="tab:blue",
+        alpha=0.25,
+    )
+
+    if tau_stereo is not None:
+        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.2, linestyle="--")
+    ax.axvline(tau_ori_st_max, color="tab:blue", linewidth=1.0)
+
+    ax.set_ylabel("Orientation accuracy")
+    ax.set_ylim(0.99988, 1.0)
+    ax.set_xlim(min(taus), max(taus))
+    ax.text(0.5, 1.08, "(a)", transform=ax.transAxes,
+            ha="center", va="bottom", fontsize=12)
+
+    # ==================================================
+    # (b) Orientation, Monocular
+    # ==================================================
+    ax = axes[0, 1]
+
+    ax.plot(taus, ori_mean_m, color="tab:red", lw=1.2)
+    ax.fill_between(
+        taus,
+        ori_mean_m - ori_std_m,
+        ori_mean_m + ori_std_m,
+        color="tab:red",
+        alpha=0.25,
+    )
+
+    if tau_mono is not None:
+        ax.axvline(-tau_mono, color="tab:red", linewidth=1.2, linestyle="--")
+    ax.axvline(tau_ori_m_max, color="tab:red", linewidth=1.0)
+
+    ax.set_ylim(0.99988, 1.0)
+    ax.set_xlim(min(taus), max(taus))
+    ax.text(0.5, 1.08, "(b)", transform=ax.transAxes,
+            ha="center", va="bottom", fontsize=12)
+
+    # ==================================================
+    # (c) Position, Stereo
+    # ==================================================
+    ax = axes[1, 0]
+
+    ax.plot(taus, pos_mean_st, color="tab:blue", lw=1.2)
+    ax.fill_between(
+        taus,
+        pos_mean_st - pos_std_st,
+        pos_mean_st + pos_std_st,
+        color="tab:blue",
+        alpha=0.25,
+    )
+
+    if tau_stereo is not None:
+        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.2, linestyle="--")
+    ax.axvline(tau_pos_st_max, color="tab:blue", linewidth=1.0)
+
+    ax.set_ylabel("Position accuracy")
+    ax.set_ylim(0.999997, 1.0)
+    ax.set_xlim(min(taus), max(taus))
+    ax.text(0.5, 1.08, "(c)", transform=ax.transAxes,
+            ha="center", va="bottom", fontsize=12)
+
+    # ==================================================
+    # (d) Position, Monocular
+    # ==================================================
+    ax = axes[1, 1]
+
+    ax.plot(taus, pos_mean_m, color="tab:red", lw=1.2)
+    ax.fill_between(
+        taus,
+        pos_mean_m - pos_std_m,
+        pos_mean_m + pos_std_m,
+        color="tab:red",
+        alpha=0.25,
+    )
+
+    if tau_mono is not None:
+        ax.axvline(-tau_mono, color="tab:red", linewidth=1.2, linestyle="--",)
+    ax.axvline(tau_pos_m_max, color="tab:red", linewidth=1.0)
+
+    ax.set_ylim(0.999997, 1.0)
+    ax.set_xlim(min(taus), max(taus))
+    ax.text(0.5, 1.08, "(d)", transform=ax.transAxes,
+            ha="center", va="bottom", fontsize=12)
+
+    # --------------------------------------------------
+    # Common formatting
+    # --------------------------------------------------
+    for ax in axes[1, :]:
+        ax.set_xlabel("Temporal offset τ [s]")
+
+    for ax in axes.flatten():
+        ax.grid(True, alpha=0.25)
+
+    plt.tight_layout(pad=0.6)
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
