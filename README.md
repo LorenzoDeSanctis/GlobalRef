@@ -18,3 +18,16 @@ This repository implements a complete workflow to:
   - Geodesic rotation and translation errors
   - Orientation and position accuracy metrics
 - Analyze the sensitivity of validation metrics with respect to temporal offset
+
+---
+
+## License
+
+### Code
+
+The source code in this repository is released under the **MIT License**.
+
+### Dataset
+
+The dataset is released under the  
+**Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International License (CC BY-NC-ND 4.0)**.
