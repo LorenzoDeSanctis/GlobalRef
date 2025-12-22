@@ -4,6 +4,8 @@
 
 The pipeline is intended for **research-grade validation**, with an emphasis on reproducibility when analyzing temporal synchronization, spatial alignment, and accuracy. Validation metrics follow the formulation proposed by Shah et al., allowing direct and transparent comparison across sensing modalities.
 
+![Pipeline overview](figures/setup_overview.png)
+
 ---
 
 ## Project Overview
