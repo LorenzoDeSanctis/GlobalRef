@@ -248,25 +248,23 @@ def plot_tau_shah_metrics(
     pos_mean_m,
     pos_std_m,
     output_path,
+    tau_stereo=None,
+    tau_mono=None,
 ):
     """
     Plot Shah orientation and position accuracy metrics as a function of τ.
 
-    Parameters
-    ----------
-    taus : ndarray
-        Temporal offsets [s].
-    ori_mean_st, ori_std_st : ndarray
-        Mean and std of orientation accuracy (stereo).
-    pos_mean_st, pos_std_st : ndarray
-        Mean and std of position accuracy (stereo).
-    ori_mean_m, ori_std_m : ndarray
-        Mean and std of orientation accuracy (monocular).
-    pos_mean_m, pos_std_m : ndarray
-        Mean and std of position accuracy (monocular).
-    output_path : str
-        Path where the figure will be saved.
+    For each modality:
+    - solid vertical line  : τ provided in input
+    - dashed vertical line : τ maximizing the plotted metric
     """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    # --------------------------------------------------
+    # Style
+    # --------------------------------------------------
     plt.rcParams.update({
         "font.size": 7,
         "axes.labelsize": 7,
@@ -289,41 +287,103 @@ def plot_tau_shah_metrics(
 
     fig, axes = plt.subplots(1, 2, figsize=(7.48, 3.0), sharex=True)
 
-    # (a) Orientation
+    # τ that maximizes each metric
+    tau_ori_st_max = taus[np.argmax(ori_mean_st)]
+    tau_ori_m_max  = taus[np.argmax(ori_mean_m)]
+    tau_pos_st_max = taus[np.argmax(pos_mean_st)]
+    tau_pos_m_max  = taus[np.argmax(pos_mean_m)]
+
+    # ==================================================
+    # (a) Orientation accuracy
+    # ==================================================
     ax = axes[0]
-    ax.plot(taus, ori_mean_st, label="Stereo", lw=1.2)
+
+    ax.plot(taus, ori_mean_st, color="tab:blue", lw=1.2, label="Stereo")
     ax.fill_between(
-        taus, ori_mean_st - ori_std_st, ori_mean_st + ori_std_st, alpha=0.25
+        taus,
+        ori_mean_st - ori_std_st,
+        ori_mean_st + ori_std_st,
+        color="tab:blue",
+        alpha=0.25,
     )
-    ax.plot(taus, ori_mean_m, label="Monocular", lw=1.2)
+
+    ax.plot(taus, ori_mean_m, color="tab:red", lw=1.2, label="Monocular")
     ax.fill_between(
-        taus, ori_mean_m - ori_std_m, ori_mean_m + ori_std_m, alpha=0.25
+        taus,
+        ori_mean_m - ori_std_m,
+        ori_mean_m + ori_std_m,
+        color="tab:red",
+        alpha=0.25,
     )
+
+    # solid lines: input τ
+    if tau_stereo is not None:
+        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.4)
+    if tau_mono is not None:
+        ax.axvline(-tau_mono, color="tab:red", linewidth=1.4)
+
+    # dashed lines: τ maximizing metric
+    ax.axvline(tau_ori_st_max, color="tab:blue", linestyle="--", linewidth=1.2)
+    ax.axvline(tau_ori_m_max,  color="tab:red",  linestyle="--", linewidth=1.2)
 
     ax.set_ylabel("Orientation accuracy")
-    ax.set_ylim(0.99988, 1)
+    ax.set_ylim(0.99988, 1.0)
     ax.grid(True, alpha=0.25)
-    ax.text(0.5, 1.1, "(a)", transform=ax.transAxes,
-            ha="center", va="bottom", fontsize=12)
+    ax.text(
+        0.5, 1.1, "(a)",
+        transform=ax.transAxes,
+        ha="center", va="bottom",
+        fontsize=12,
+    )
+
     ax.legend(frameon=False)
 
-    # (b) Position
+    # ==================================================
+    # (b) Position accuracy
+    # ==================================================
     ax = axes[1]
-    ax.plot(taus, pos_mean_st, label="Stereo", lw=1.2)
+
+    ax.plot(taus, pos_mean_st, color="tab:blue", lw=1.2, label="Stereo")
     ax.fill_between(
-        taus, pos_mean_st - pos_std_st, pos_mean_st + pos_std_st, alpha=0.25
+        taus,
+        pos_mean_st - pos_std_st,
+        pos_mean_st + pos_std_st,
+        color="tab:blue",
+        alpha=0.25,
     )
-    ax.plot(taus, pos_mean_m, label="Monocular", lw=1.2)
+
+    ax.plot(taus, pos_mean_m, color="tab:red", lw=1.2, label="Monocular")
     ax.fill_between(
-        taus, pos_mean_m - pos_std_m, pos_mean_m + pos_std_m, alpha=0.25
+        taus,
+        pos_mean_m - pos_std_m,
+        pos_mean_m + pos_std_m,
+        color="tab:red",
+        alpha=0.25,
     )
+
+    # solid lines: input τ
+    if tau_stereo is not None:
+        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.4)
+    if tau_mono is not None:
+        ax.axvline(-tau_mono, color="tab:red", linewidth=1.4)
+
+    # dashed lines: τ maximizing metric
+    ax.axvline(tau_pos_st_max, color="tab:blue", linestyle="--", linewidth=1.2)
+    ax.axvline(tau_pos_m_max,  color="tab:red",  linestyle="--", linewidth=1.2)
 
     ax.set_ylabel("Position accuracy")
-    ax.set_ylim(0.999997, 1)
+    ax.set_ylim(0.999997, 1.0)
     ax.grid(True, alpha=0.25)
-    ax.text(0.5, 1.1, "(b)", transform=ax.transAxes,
-            ha="center", va="bottom", fontsize=12)
+    ax.text(
+        0.5, 1.1, "(b)",
+        transform=ax.transAxes,
+        ha="center", va="bottom",
+        fontsize=12,
+    )
 
+    # --------------------------------------------------
+    # Common formatting and save
+    # --------------------------------------------------
     for ax in axes:
         ax.set_xlabel("Temporal offset τ [s]")
 
