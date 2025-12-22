@@ -473,8 +473,8 @@ def plot_tau_shah_metrics_2x2(
     )
 
     if tau_stereo is not None:
-        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.2, linestyle="--")
-    ax.axvline(tau_ori_st_max, color="tab:blue", linewidth=1.0)
+        ax.axvline(-tau_stereo, color="black", linewidth=1.2, linestyle="--")
+    ax.axvline(tau_ori_st_max, color="black", linewidth=1.0)
 
     ax.set_ylabel("Orientation accuracy")
     ax.set_ylim(0.99988, 1.0)
@@ -497,8 +497,8 @@ def plot_tau_shah_metrics_2x2(
     )
 
     if tau_mono is not None:
-        ax.axvline(-tau_mono, color="tab:red", linewidth=1.2, linestyle="--")
-    ax.axvline(tau_ori_m_max, color="tab:red", linewidth=1.0)
+        ax.axvline(-tau_mono, color="black", linewidth=1.2, linestyle="--")
+    ax.axvline(tau_ori_m_max, color="black", linewidth=1.0)
 
     ax.set_ylim(0.99988, 1.0)
     ax.set_xlim(min(taus), max(taus))
@@ -520,8 +520,8 @@ def plot_tau_shah_metrics_2x2(
     )
 
     if tau_stereo is not None:
-        ax.axvline(-tau_stereo, color="tab:blue", linewidth=1.2, linestyle="--")
-    ax.axvline(tau_pos_st_max, color="tab:blue", linewidth=1.0)
+        ax.axvline(-tau_stereo, color="black", linewidth=1.2, linestyle="--")
+    ax.axvline(tau_pos_st_max, color="black", linewidth=1.0)
 
     ax.set_ylabel("Position accuracy")
     ax.set_ylim(0.999997, 1.0)
@@ -544,8 +544,8 @@ def plot_tau_shah_metrics_2x2(
     )
 
     if tau_mono is not None:
-        ax.axvline(-tau_mono, color="tab:red", linewidth=1.2, linestyle="--",)
-    ax.axvline(tau_pos_m_max, color="tab:red", linewidth=1.0)
+        ax.axvline(-tau_mono, color="black", linewidth=1.2, linestyle="--",)
+    ax.axvline(tau_pos_m_max, color="black", linewidth=1.0)
 
     ax.set_ylim(0.999997, 1.0)
     ax.set_xlim(min(taus), max(taus))
