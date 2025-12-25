@@ -2,7 +2,7 @@
 
 **GlobalRef** is a Python framework for temporal synchronization, rigid alignment, and hand–eye calibration between heterogeneous motion capture systems, with a specific focus on combining marker-based tracking and video-based pose estimation.
 
-The pipeline is intended for **research-grade validation**, with an emphasis on reproducibility when analyzing temporal synchronization, spatial alignment, and accuracy. Validation metrics follow the formulation proposed by Shah et al., allowing direct and transparent comparison across sensing modalities.
+The pipeline is intended for **research-grade validation**, with an emphasis on reproducibility when analyzing temporal synchronization, spatial alignment, and accuracy. Validation metrics follow the formulation proposed by Shah (2013, J Mech Robot), allowing direct and transparent comparison across sensing modalities.
 
 ![Pipeline overview](figures/setup_overview.png)
 
