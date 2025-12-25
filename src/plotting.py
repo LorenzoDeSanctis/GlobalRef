@@ -564,3 +564,15 @@ def plot_tau_shah_metrics_2x2(
     plt.tight_layout(pad=0.6)
     plt.savefig(output_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
+
+    # --------------------------------------------------
+    # Tau differences (estimated - known)
+    # --------------------------------------------------
+    print("Tau differences")
+    if tau_stereo is not None:
+        print(f" Orientation Stereo: {abs(tau_ori_st_max + tau_stereo)*1000:.6f} ms")
+        print(f" Position    Stereo: {abs(tau_pos_st_max + tau_stereo)*1000:.6f} ms")
+
+    if tau_mono is not None:
+        print(f" Orientation Monocular: {abs(tau_ori_m_max + tau_mono)*1000:.4f} ms")
+        print(f" Position    Monocular: {abs(tau_pos_m_max + tau_mono)*1000:.4f} ms")
