@@ -204,7 +204,7 @@ def plot_shah_boxplots(
     )
 
     axes[0].set_xticklabels(labels)
-    axes[0].set_ylabel("Orientation Accuracy")
+    axes[0].set_ylabel(r'Orientation consistency $c_R$')
     axes[0].set_ylim(0.999945, 1)
     axes[0].grid(True, axis="y", alpha=0.25)
     axes[0].text(0.5, 1.1, "(a)", transform=axes[0].transAxes,
@@ -225,7 +225,7 @@ def plot_shah_boxplots(
     )
 
     axes[1].set_xticklabels(labels)
-    axes[1].set_ylabel("Position Accuracy")
+    axes[1].set_ylabel(r'Position consistency $c_t$')
     axes[1].set_ylim(0.99999775, 1)
     axes[1].grid(True, axis="y", alpha=0.25)
     axes[1].text(0.5, 1.1, "(b)", transform=axes[1].transAxes,
@@ -326,7 +326,7 @@ def plot_tau_shah_metrics(
     ax.axvline(tau_ori_st_max, color="tab:blue", linewidth=1)
     ax.axvline(tau_ori_m_max,  color="tab:red", linewidth=1)
 
-    ax.set_ylabel("Orientation accuracy")
+    ax.set_ylabel(r'Orientation consistency $c_R$')
     ax.set_ylim(0.99988, 1.0)
     ax.set_xlim(min(taus), max(taus))
     ax.grid(True, alpha=0.25)
@@ -372,7 +372,7 @@ def plot_tau_shah_metrics(
     ax.axvline(tau_pos_st_max, color="tab:blue", linewidth=0.8)
     ax.axvline(tau_pos_m_max,  color="tab:red", linewidth=0.8)
 
-    ax.set_ylabel("Position accuracy")
+    ax.set_ylabel(r'Position consistency $c_t$')
     ax.set_ylim(0.999997, 1.0)
     ax.set_xlim(min(taus), max(taus))
     ax.grid(True, alpha=0.25)
@@ -476,7 +476,7 @@ def plot_tau_shah_metrics_2x2(
         ax.axvline(-tau_stereo, color="black", linewidth=1.2, linestyle="--")
     ax.axvline(tau_ori_st_max, color="black", linewidth=1.0)
 
-    ax.set_ylabel("Orientation accuracy")
+    ax.set_ylabel(r'Orientation consistency $c_R$')
     ax.set_ylim(0.99988, 1.0)
     ax.set_xlim(min(taus), max(taus))
     ax.text(0.5, 1.08, "(a)", transform=ax.transAxes,
@@ -523,7 +523,7 @@ def plot_tau_shah_metrics_2x2(
         ax.axvline(-tau_stereo, color="black", linewidth=1.2, linestyle="--")
     ax.axvline(tau_pos_st_max, color="black", linewidth=1.0)
 
-    ax.set_ylabel("Position accuracy")
+    ax.set_ylabel(r'Position consistency $c_t$')
     ax.set_ylim(0.999997, 1.0)
     ax.set_xlim(min(taus), max(taus))
     ax.text(0.5, 1.08, "(c)", transform=ax.transAxes,
